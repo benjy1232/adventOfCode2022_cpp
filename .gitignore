@@ -1,3 +1,6 @@
 *.obj
 *.exe
 *.out
+*.o
+
+build/
