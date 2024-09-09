@@ -30,16 +30,12 @@ int main(int argc, char** argv) {
 	current_sum = 0;
 
 
-	std::printf("Top Elf is carrying:\n");
-	std::printf("  %d\n", pq.top());
-	std::printf("\n");
+	std::printf("Solution 1:  %d\n", pq.top());
 
 	for (int i = 0; i < 3; i++) {
 		current_sum += pq.top();
 		pq.pop();
 	}
 
-	std::printf("Top 3 Elves are carrying:\n");
-	std::printf("  %d\n", current_sum);
-	std::printf("\n");
+	std::printf("Solution 2:  %d\n", current_sum);
 }

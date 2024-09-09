@@ -43,7 +43,7 @@ void partOne(const std::vector<std::string>& lines) {
 		sum += calculateScore(intersectionChar(firstHalf, secondHalf)[0]);
 	}
 
-	std::printf("Sum: %u\n", sum);
+	std::printf("Solution 1: %u\n", sum);
 }
 
 void partTwo(const std::vector<std::string>& lines) {
@@ -62,7 +62,7 @@ void partTwo(const std::vector<std::string>& lines) {
 			}
 		}
 	}
-	std::printf("Sum: %u\n", sum);
+	std::printf("Solution 2: %u\n", sum);
 }
 
 int main(int argc, char** argv) {
@@ -74,7 +74,6 @@ int main(int argc, char** argv) {
 		readStrings(ifs, lines);
 		ifs.close();
 	}
-	std::printf("Size: %lu\n", lines.size());
 	partOne(lines);
 	partTwo(lines);
 }
