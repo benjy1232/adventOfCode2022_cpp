@@ -49,7 +49,7 @@ void partOne(const std::vector<std::string>& lines) {
 void partTwo(const std::vector<std::string>& lines) {
 	uint32_t sum = 0;
 	std::array<std::string, 3> stringArr;
-	
+
 	for (auto i = 0; i < lines.size(); i++) {
 		stringArr[i % 3] = lines[i];
 		if (i % 3 != 2)

@@ -111,7 +111,7 @@ void solutionTwo(std::vector<std::string>& strs) {
 			if (m.symbol == outcomeSym)
 				return m.outcome;
 		return L;
-		
+
 	};
 
 	auto getNext = [](RPS rps) {
