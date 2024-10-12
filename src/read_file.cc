@@ -1,3 +1,7 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
 #include "include/read_file.h"
 
 /**
@@ -9,5 +13,5 @@
 void readStrings(std::istream& in, std::vector<std::string>& out) {
 	std::string s;
 	while (std::getline(in, s))
-		out.push_back(s);
+		out.emplace_back(s);
 }

@@ -84,10 +84,10 @@ inline uint32_t calculateScore(const RPS yourMove, const RoundOutcome outcome) {
 
 void solutionOne(std::vector<std::string>& strs) {
 	uint32_t score = 0;
-	auto getYourMove = [](char move) {
-		for (auto ym : YOUR_MOVES)
-			if (ym.symbol == move)
-				return ym.move;
+	auto getYourMove = [](char move) -> RPS {
+		for (auto yourMove : YOUR_MOVES)
+			if (yourMove.symbol == move)
+				return yourMove.move;
 		return R;
 	};
 	RPS oppMove;

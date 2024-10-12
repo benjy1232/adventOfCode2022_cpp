@@ -1,26 +1,46 @@
+#include <algorithm>
 #include <array>
 #include <cstdio>
 #include <cstdint>
 #include <fstream>
 #include <iostream>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
 #include "include/read_file.h"
+using namespace std;
 
-inline bool stringContains(const std::string& s, char c) {
+inline bool stringContains(const string& s, char c) {
 	for (auto sc : s)
 		if (sc == c)
 			return true;
 	return false;
 }
 
-inline std::vector<char> intersectionChar(const std::string& s1, const std::string& s2) {
-	std::vector<char> vc;
-	for (auto c : s1)
+inline vector<char> intersectionCharHelper(const string& s1, const string& s2) {
+	vector<char> vc;
+
+	auto containsLambda = [&s2, &vc](char c) {
 		if (stringContains(s2, c))
 			vc.push_back(c);
+	};
+
+	for_each(s1.begin(), s1.end(), containsLambda);
 	return vc;
+}
+
+vector<char> intersectionChar(const string* begin, const string* end) {
+  if (!begin || !end) {
+    throw new runtime_error("Begin or end cannot be null");
+  }
+
+  vector<char> ret(begin->begin(), begin->end());
+  while (begin != end) {
+    ret = intersectionCharHelper(ret.data(), *begin);
+    begin++;
+  }
+  return ret;
 }
 
 inline uint32_t calculateScore(char c) {
@@ -32,15 +52,16 @@ inline uint32_t calculateScore(char c) {
 
 void partOne(const std::vector<std::string>& lines) {
 	uint32_t sum = 0;
+	array<string, 2> arr;
 
 	for (auto line : lines) {
 		if (line.empty() || line.size() % 2 != 0)
 			continue;
 
 		uint32_t midPoint = line.size() / 2;
-		auto firstHalf = line.substr(0, midPoint);
-		auto secondHalf = line.substr(midPoint);
-		sum += calculateScore(intersectionChar(firstHalf, secondHalf)[0]);
+		arr[0] = line.substr(0, midPoint);
+		arr[1] = line.substr(midPoint);
+		sum += calculateScore(intersectionChar(arr.begin(), arr.end())[0]);
 	}
 
 	std::printf("Solution 1: %u\n", sum);
@@ -52,15 +73,8 @@ void partTwo(const std::vector<std::string>& lines) {
 
 	for (auto i = 0; i < lines.size(); i++) {
 		stringArr[i % 3] = lines[i];
-		if (i % 3 != 2)
-			continue;
-		auto vc = intersectionChar(stringArr[0], stringArr[1]);
-		for (auto c : vc) {
-			if (stringContains(stringArr[2], c)) {
-				sum += calculateScore(c);
-				break;
-			}
-		}
+		if (i % 3 == 2)
+		  sum += calculateScore(intersectionChar(stringArr.begin(), stringArr.end())[0]);
 	}
 	std::printf("Solution 2: %u\n", sum);
 }
