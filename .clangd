@@ -1,2 +1,6 @@
 CompileFlags:
-  Add: [ -xc++, -I., -I../.. ]
+  Add:
+    - -xc++
+    - -I.
+    - -I../..
+    - -I..

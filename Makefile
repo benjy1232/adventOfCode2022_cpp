@@ -1,4 +1,4 @@
-day_count=4
+day_count=5
 
 all: read_file
 	number=1 ; while [[ $$number -le $(day_count) ]] ; do \

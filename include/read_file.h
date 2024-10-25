@@ -4,4 +4,10 @@
 #include <string>
 #include <vector>
 
+/**
+ * \brief Something something something
+ *
+ * \param[in] in - do something
+ * \param[out] out - do something else
+ */
 void readStrings(std::istream& in, std::vector<std::string>& out);
