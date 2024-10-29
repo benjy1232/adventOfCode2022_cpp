@@ -2,7 +2,7 @@ day_count=5
 
 all: read_file
 	number=1 ; while [[ $$number -le $(day_count) ]] ; do \
-		$(CXX) -o build/day_$$number src/day_$$number/main.cc build/read_file.o -I. ; \
+		$(CXX) -o build/day_$$number -g src/day_$$number/main.cc build/read_file.o -I. ; \
 		((number = number + 1)) ; \
 	done
 
