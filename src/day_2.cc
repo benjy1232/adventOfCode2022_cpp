@@ -1,70 +1,62 @@
+#include "include/day_2.h"
+
 #include <array>
-#include <cstdint>
-#include <cstdio>
-#include <fstream>
-#include <iostream>
-#include <string>
-#include <vector>
 
-#include "include/read_file.h"
-
-enum RPS {
-	R = 1,
-	P,
-	S
+enum class RPS : uint32_t {
+    R = 1,
+    P,
+    S
 };
 
-/**
- * \brief RoundOutcome enum to multiply by 3 for score
- */
-enum RoundOutcome {
-	L = 0,
-	D,
-	W
+enum class RoundOutcome : uint32_t {
+    L = 0,
+    D,
+    W
 };
 
 struct RpsMove {
-	RPS  move;
-	char symbol;
+    RPS  move;
+    char symbol;
 };
 
-struct OutcomeSyms {
-	RoundOutcome outcome;
-	char         symbol;
+struct OutcomeSym {
+    RoundOutcome outcome;
+    char         symbol;
 };
+
 const std::array<RpsMove, 3> OPP_MOVES = {{
-	{ R, 'A' },
-	{ P, 'B' },
-	{ S, 'C' }
+	{ RPS::R, 'A' },
+	{ RPS::P, 'B' },
+	{ RPS::S, 'C' }
 }};
 
 const std::array<RpsMove, 3> YOUR_MOVES = {{
-	{ R, 'X' },
-	{ P, 'Y' },
-	{ S, 'Z' }
+	{ RPS::R, 'X' },
+	{ RPS::P, 'Y' },
+	{ RPS::S, 'Z' }
 }};
 
-const std::array<OutcomeSyms, 3> OUTCOMES = {{
-	{ L, 'X' },
-	{ D, 'Y' },
-	{ W, 'Z' }
+const std::array<OutcomeSym, 3> OUTCOMES = {{
+	{ RoundOutcome::L, 'X' },
+	{ RoundOutcome::D, 'Y' },
+	{ RoundOutcome::W, 'Z' }
 }};
 
 RoundOutcome calculateOutcome(const RPS yourMove, const RPS oppMove) {
 	if (yourMove == oppMove)
-		return D;
+		return RoundOutcome::D;
 
-	RoundOutcome o = W;
+	RoundOutcome o = RoundOutcome::W;
 	switch (yourMove)
 	{
-	case R:
-		if (oppMove == P) { o = L; }
+    case RPS::R:
+		if (oppMove == RPS::P) { o = RoundOutcome::L; }
 		break;
-	case P:
-		if (oppMove == S) { o = L; }
+    case RPS::P:
+		if (oppMove == RPS::S) { o = RoundOutcome::L; }
 		break;
-	case S:
-		if (oppMove == R) { o = L; }
+    case RPS::S:
+		if (oppMove == RPS::R) { o = RoundOutcome::L; }
 		break;
 	}
 	return o;
@@ -74,7 +66,7 @@ inline RPS getOppMove(char move) {
 	for (auto m : OPP_MOVES)
 		if (m.symbol == move)
 			return m.move;
-	return R;
+	return RPS::R;
 }
 
 inline uint32_t calculateScore(const RPS yourMove, const RoundOutcome outcome) {
@@ -82,13 +74,13 @@ inline uint32_t calculateScore(const RPS yourMove, const RoundOutcome outcome) {
 		static_cast<uint32_t>(outcome) * 3;
 }
 
-void solutionOne(std::vector<std::string>& strs) {
+uint32_t solutionOne(const std::vector<std::string>& strs) {
 	uint32_t score = 0;
 	auto getYourMove = [](char move) -> RPS {
 		for (auto yourMove : YOUR_MOVES)
 			if (yourMove.symbol == move)
 				return yourMove.move;
-		return R;
+		return RPS::R;
 	};
 	RPS oppMove;
 	RPS yourMove;
@@ -98,10 +90,11 @@ void solutionOne(std::vector<std::string>& strs) {
 		yourMove = getYourMove(str[2]);
 		score += calculateScore(yourMove, calculateOutcome(yourMove, oppMove));
 	}
-	std::printf("Solution 1: %u\n", score);
+
+    return score;
 }
 
-void solutionTwo(std::vector<std::string>& strs) {
+uint32_t solutionTwo(const std::vector<std::string>& strs) {
 	uint32_t score = 0;
 	RPS oppMove;
 	RoundOutcome outcome;
@@ -110,37 +103,30 @@ void solutionTwo(std::vector<std::string>& strs) {
 		for (auto m : OUTCOMES)
 			if (m.symbol == outcomeSym)
 				return m.outcome;
-		return L;
+		return RoundOutcome::L;
 
 	};
 
 	auto getNext = [](RPS rps) {
-		if (rps == R) return P;
-		if (rps == P) return S;
-		return R;
+		if (rps == RPS::R) return RPS::P;
+		if (rps == RPS::P) return RPS::S;
+		return RPS::R;
 	};
 
 	for (auto str : strs) {
 		oppMove = getOppMove(str[0]);
 		outcome = getOutcome(str[2]);
-		RPS rps = R;
+		RPS rps = RPS::R;
 		while (calculateOutcome(rps, oppMove) != outcome)
 				rps = getNext(rps);
 
 		score += calculateScore(rps, outcome);
 	}
-	std::printf("Solution 2: %u\n", score);
+
+    return score;
 }
 
-int main(int argc, char** argv) {
-	std::vector<std::string> strings;
-
-	if (argc == 1) { /* No argument - read stdin */
-		readStrings(std::cin, strings);
-	} else {
-		std::ifstream ifs(argv[1]);
-		readStrings(ifs, strings);
-	}
-	solutionOne(strings);
-	solutionTwo(strings);
+void DayTwo::Solution::run() {
+    setPartOneSolution(solutionOne(getLines()));
+    setPartTwoSolution(solutionTwo(getLines()));
 }

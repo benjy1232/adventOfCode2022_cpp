@@ -15,3 +15,9 @@ void readStrings(std::istream& in, std::vector<std::string>& out) {
 	while (std::getline(in, s))
 		out.emplace_back(s);
 }
+
+std::vector<std::string> readStrings(std::istream& in) {
+	std::vector<std::string> ret;
+	readStrings(in, ret);
+	return ret;
+}
