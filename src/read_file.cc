@@ -16,8 +16,3 @@ void readStrings(std::istream& in, std::vector<std::string>& out) {
 		out.emplace_back(s);
 }
 
-std::vector<std::string> readStrings(std::istream& in) {
-	std::vector<std::string> ret;
-	readStrings(in, ret);
-	return ret;
-}

@@ -1,13 +1,16 @@
-day_count=5
+SOURCEDIR = src
+BUILDDIR = build
+SOURCES := $(shell find $(SOURCEDIR) -maxdepth 1 -name '*.cc' -exec basename {} \;)
+OBJECTS := $(addprefix $(BUILDDIR)/,$(SOURCES:%.cc=%.o))
+BINARY = $(BUILDDIR)/main
 
-all: read_file
-	number=1 ; while [[ $$number -le $(day_count) ]] ; do \
-		$(CXX) -o build/day_$$number -g src/day_$$number/main.cc build/read_file.o -I. ; \
-		((number = number + 1)) ; \
-	done
+all: $(BINARY)
 
-read_file:
-	$(CXX) -o build/read_file.o src/read_file.cc -I. -c
+$(BINARY): $(OBJECTS)
+	$(CXX) $(CFLAGS) $(LDFLAGS) $(OBJECTS) -o $(BINARY)
+
+$(BUILDDIR)/%.o: $(SOURCEDIR)/%.cc
+	$(CXX) $(CFLAGS) $(LDFLAGS) -I. -g -c $< -o $@
 
 clean:
 	rm -rf build/*

@@ -11,5 +11,3 @@
  * \param[out] out - do something else
  */
 void readStrings(std::istream& in, std::vector<std::string>& out);
-
-std::vector<std::string> readStrings(std::istream& in);
