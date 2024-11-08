@@ -11,14 +11,15 @@
 #include "include/solution.h"
 #include "include/day_1.h"
 #include "include/day_2.h"
+#include "include/day_3.h"
 
 const char OPTS[] = "d:f:";
 
-std::uint32_t highestCompletedDay = 2;
+uint32_t highestCompletedDay = 3;
 
-std::uint32_t dayNum = 0;
+uint32_t dayNum = 0;
+bool useStdin = false;
 std::string filename = "";
-bool useStdin        = false;
 
 void parseArgs(int argc, char** argv) {
     char opt = getopt(argc, argv, OPTS);
@@ -62,7 +63,7 @@ int main(int argc, char** argv) {
 		std::fprintf(stderr, "Expected a day\n");
 		return 1;
 	} else if (dayNum > highestCompletedDay || dayNum == 0) {
-		std::fprintf(stderr, "Expected a day in range [1, %u]",
+		std::fprintf(stderr, "Expected a day in range [1, %u]\n",
 				highestCompletedDay);
         return 1;
 	}
@@ -73,29 +74,32 @@ int main(int argc, char** argv) {
 	case 1:
 		soln = std::make_unique<DayOne::Solution>(lines);
 		break;
-    case 2:
-        soln = std::make_unique<DayTwo::Solution>(lines);
-        break;
+	case 2:
+		soln = std::make_unique<DayTwo::Solution>(lines);
+		break;
+        case 3:
+		soln = std::make_unique<DayThreeSolution>(lines);
+		break;
 	default:
 		break;
 	};
 
 	if (!soln) {
-        return 1;
+		return 1;
 	}
-    soln->run();
-    std::printf("Day %u:\n", dayNum);
-    std::printf("Part One: ");
-    if (std::holds_alternative<uint32_t>(soln->getPartOneSolution()))
-        std::printf("%d", std::get<uint32_t>(soln->getPartOneSolution()));
-    else
-        std::printf("%s", std::get<std::string>(soln->getPartOneSolution()).c_str());
-    std::printf("\n");
+	soln->run();
+	std::printf("Day %u:\n", dayNum);
+	std::printf("Part One: ");
+	if (std::holds_alternative<uint32_t>(soln->getPartOneSolution()))
+		std::printf("%d", std::get<uint32_t>(soln->getPartOneSolution()));
+	else
+		std::printf("%s", std::get<std::string>(soln->getPartOneSolution()).c_str());
+	std::printf("\n");
 
-    std::printf("Part Two: ");
-    if (std::holds_alternative<uint32_t>(soln->getPartTwoSolution()))
-        std::printf("%d", std::get<uint32_t>(soln->getPartTwoSolution()));
-    else
-        std::printf("%s", std::get<std::string>(soln->getPartTwoSolution()).c_str());
-    std::printf("\n");
+	std::printf("Part Two: ");
+	if (std::holds_alternative<uint32_t>(soln->getPartTwoSolution()))
+		std::printf("%d", std::get<uint32_t>(soln->getPartTwoSolution()));
+	else
+		std::printf("%s", std::get<std::string>(soln->getPartTwoSolution()).c_str());
+	std::printf("\n");
 }
